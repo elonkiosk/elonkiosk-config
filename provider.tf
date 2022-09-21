@@ -8,6 +8,6 @@ terraform {
 }
 
 provider "aws" {
-  profile = var.profile
+  profile = "elon-kiosk"
   region  = "ap-northeast-2"
 }

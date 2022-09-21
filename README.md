@@ -1,4 +1,8 @@
-# Elon Infrask
+# Elon Kiosk Infrastructure Configuration
+
+## Overview
+
+![Elon Kiosk architecture overview](./docs/images/Arch.png)
 
 ## Scope of this repository
 

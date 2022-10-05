@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket          = "admin-tfstate-bucket"
-    key             = "elon-kiosk-tfstate"
-    region          = "ap-northeast-2"
-    dynamodb_table  = "admin-tfstate-locking"
+    bucket         = "admin-tfstate-bucket"
+    key            = "elon-kiosk-tfstate"
+    region         = "ap-northeast-2"
+    dynamodb_table = "admin-tfstate-locking"
   }
 
   required_providers {
@@ -15,5 +15,5 @@ terraform {
 }
 
 provider "aws" {
-  region  = "ap-northeast-2"
+  region = "ap-northeast-2"
 }

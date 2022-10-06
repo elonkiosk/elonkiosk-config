@@ -94,3 +94,52 @@ resource "aws_route" "priv_rtb_api_default" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_nat_gateway.nat_api.id
 }
+
+# ----- Private Subnet (DB Layer) -----
+resource "aws_subnet" "vpc_main_priv_subnet_db" {
+  vpc_id     = aws_vpc.vpc_main.id
+  cidr_block = "172.16.3.0/24"
+
+  availability_zone = "ap-northeast-2a"
+
+  tags = {
+    Name = "elon-kiosk-private-subnet-db"
+  }
+}
+
+resource "aws_eip" "eip_nat_db" {
+  vpc   = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_nat_gateway" "nat_db" {
+  allocation_id = aws_eip.eip_nat_db.id
+
+  subnet_id = aws_subnet.vpc_main_pub_subnet.id
+
+  tags = {
+    Name = "elon-kiosk-nat-db"
+  }
+}
+
+resource "aws_route_table" "vpc_main_priv_rtb_db" {
+  vpc_id = aws_vpc.vpc_main.id
+
+  tags = {
+    Name = "elon-kiosk-private-rtb-db"
+  }
+}
+
+resource "aws_route_table_association" "vpc_main_priv_rtb_db_assoc" {
+  subnet_id      = aws_subnet.vpc_main_priv_subnet_db.id
+  route_table_id = aws_route_table.vpc_main_priv_rtb_db.id
+}
+
+resource "aws_route" "priv_rtb_db_default" {
+  route_table_id         = aws_route_table.vpc_main_priv_rtb_db.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_nat_gateway.nat_db.id
+}

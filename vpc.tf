@@ -89,21 +89,15 @@ resource "aws_subnet" "vpc_main_priv_subnet_db" {
   }
 }
 
-resource "aws_route_table" "vpc_main_priv_rtb_db" {
-  vpc_id = aws_vpc.vpc_main.id
-
-  tags = {
-    Name = "elon-kiosk-private-rtb-db"
-  }
-}
-
-resource "aws_route_table_association" "vpc_main_priv_rtb_db_assoc" {
-  subnet_id      = aws_subnet.vpc_main_priv_subnet_db.id
-  route_table_id = aws_route_table.vpc_main_priv_rtb_db.id
-}
-
-resource "aws_route" "priv_rtb_db_default" {
-  route_table_id         = aws_route_table.vpc_main_priv_rtb_db.id
-  destination_cidr_block = "0.0.0.0/0"
-  network_interface_id   = aws_instance.nat_ec2_db.primary_network_interface_id
-}
+# resource "aws_route_table" "vpc_main_priv_rtb_db" {
+#   vpc_id = aws_vpc.vpc_main.id
+#
+#   tags = {
+#     Name = "elon-kiosk-private-rtb-db"
+#   }
+# }
+#
+# resource "aws_route_table_association" "vpc_main_priv_rtb_db_assoc" {
+#   subnet_id      = aws_subnet.vpc_main_priv_subnet_db.id
+#   route_table_id = aws_route_table.vpc_main_priv_rtb_db.id
+# }

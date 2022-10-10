@@ -1,6 +1,6 @@
 # ----- NAT Gateway (API Layer) -----
 resource "aws_eip" "eip_nat" {
-  vpc   = true
+  vpc = true
 
   lifecycle {
     create_before_destroy = true

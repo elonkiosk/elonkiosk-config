@@ -27,9 +27,9 @@ data "aws_ami" "amazonLinux" {
 
 # SG
 resource "aws_security_group" "sg_apiserver" {
-  name = "elon-kiosk-api-sg"
+  name        = "elon-kiosk-api-sg"
   description = "API Server Security Group"
-  vpc_id = aws_vpc.vpc_main.id
+  vpc_id      = aws_vpc.vpc_main.id
 
   tags = {
     Name = "elon-kiosk-api-sg"
@@ -39,12 +39,12 @@ resource "aws_security_group" "sg_apiserver" {
 ## SG Rules
 ### Ingress
 resource "aws_security_group_rule" "sg_apiserver_rule_ing_http" {
-  type              = "ingress"
-  from_port         = var.apiserver_port
-  to_port           = var.apiserver_port
-  protocol          = "TCP"
+  type                     = "ingress"
+  from_port                = var.apiserver_port
+  to_port                  = var.apiserver_port
+  protocol                 = "TCP"
   source_security_group_id = aws_security_group.sg_alb.id
-  security_group_id = aws_security_group.sg_apiserver.id
+  security_group_id        = aws_security_group.sg_apiserver.id
 
   lifecycle {
     create_before_destroy = true
@@ -117,10 +117,10 @@ resource "aws_instance" "apiserver_az2" {
 # This instance is intended to use as a SSH tunnel to the API server instance
 # Should be deleted in production environment
 resource "aws_instance" "tunnel" {
-  ami           = data.aws_ami.amazonLinux.id
-  instance_type = "t2.micro"
-  subnet_id = aws_subnet.pub_subnet_az1.id
-  key_name  = "elon-kiosk-ssh-pubkey"
+  ami                         = data.aws_ami.amazonLinux.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.pub_subnet_az1.id
+  key_name                    = "elon-kiosk-ssh-pubkey"
   associate_public_ip_address = true
 
   vpc_security_group_ids = [

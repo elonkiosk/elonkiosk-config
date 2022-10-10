@@ -28,9 +28,9 @@ resource "aws_route53_record" "hz_main_record_soa" {
 
 # ACM
 resource "aws_acm_certificate" "hz_main_cert" {
-  domain_name       = var.hz_main_name
+  domain_name               = var.hz_main_name
   subject_alternative_names = [format("*.%s", var.hz_main_name)]
-  validation_method = "DNS"
+  validation_method         = "DNS"
 }
 
 ## ACM Validation Record
@@ -60,7 +60,7 @@ resource "aws_acm_certificate_validation" "hz_main_cert_validate" {
 ## ALB Alias Record
 resource "aws_route53_record" "hz_main_record_alb" {
   zone_id = aws_route53_zone.hz_main.zone_id
-  name = format("elon-kiosk.%s", var.hz_main_name)
+  name    = format("elon-kiosk.%s", var.hz_main_name)
   type    = "A"
 
   alias {

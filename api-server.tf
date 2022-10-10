@@ -40,8 +40,8 @@ resource "aws_security_group" "sg_apiserver" {
 ### Ingress
 resource "aws_security_group_rule" "sg_apiserver_rule_ing_http" {
   type              = "ingress"
-  from_port         = 8080
-  to_port           = 8080
+  from_port         = var.apiserver_port
+  to_port           = var.apiserver_port
   protocol          = "TCP"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.sg_apiserver.id

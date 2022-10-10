@@ -78,7 +78,7 @@ resource "aws_alb" "alb_main" {
 ## Target Group
 resource "aws_alb_target_group" "alb_main_tg_api" {
   name = "elon-kiosk-alb-tg"
-  port = 8080
+  port = var.apiserver_port
   protocol = "HTTP"
   vpc_id = aws_vpc.vpc_main.id
 }
@@ -86,13 +86,13 @@ resource "aws_alb_target_group" "alb_main_tg_api" {
 resource "aws_alb_target_group_attachment" "alb_main_tg_api_attach_az1" {
   target_group_arn = aws_alb_target_group.alb_main_tg_api.arn
   target_id = aws_instance.apiserver_az1.id
-  port = 8080
+  port = var.apiserver_port
 }
 
 resource "aws_alb_target_group_attachment" "alb_main_tg_api_attach_az2" {
   target_group_arn = aws_alb_target_group.alb_main_tg_api.arn
   target_id = aws_instance.apiserver_az2.id
-  port = 8080
+  port = var.apiserver_port
 }
 
 ## Listeners

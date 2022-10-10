@@ -42,8 +42,8 @@ resource "aws_security_group_rule" "sg_alb_rule_ing_https" {
 ### Egress
 resource "aws_security_group_rule" "sg_alb_rule_eg_http" {
   type              = "egress"
-  from_port         = 80
-  to_port           = 80
+  from_port         = var.apiserver_port
+  to_port           = var.apiserver_port
   protocol          = "TCP"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.sg_alb.id

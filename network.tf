@@ -74,7 +74,7 @@ resource "aws_subnet" "pub_subnet_az2" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = "172.16.4.0/24"
 
-  availability_zone = "ap-northeast-2b"
+  availability_zone = "ap-northeast-2c"
 
   tags = {
     Name = "elon-kiosk-public-subnet-az2"
@@ -124,7 +124,7 @@ resource "aws_subnet" "priv_subnet_az2_api" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = "172.16.5.0/24"
 
-  availability_zone = "ap-northeast-2b"
+  availability_zone = "ap-northeast-2c"
 
   tags = {
     Name = "elon-kiosk-private-subnet-az2-api"
@@ -158,7 +158,7 @@ resource "aws_subnet" "priv_subnet_az2_db" {
   vpc_id     = aws_vpc.vpc_main.id
   cidr_block = "172.16.6.0/24"
 
-  availability_zone = "ap-northeast-2b"
+  availability_zone = "ap-northeast-2c"
 
   tags = {
     Name = "elon-kiosk-private-subnet-az2-db"

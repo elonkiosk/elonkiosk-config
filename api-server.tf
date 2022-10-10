@@ -1,10 +1,10 @@
-# ----- Keypair -----
+# Keypair
 resource "aws_key_pair" "ec2_ssh_pub" {
   key_name   = "elon-kiosk-ssh-pubkey"
   public_key = file("./ec2-ssh.pub")
 }
 
-# ----- AMI -----
+# AMI
 data "aws_ami" "amazonLinux" {
   most_recent = true
   owners      = ["amazon"]
@@ -25,7 +25,7 @@ data "aws_ami" "amazonLinux" {
   }
 }
 
-# ----- SG -----
+# SG
 resource "aws_security_group" "sg_apiserver" {
   name = "elon-kiosk-api-sg"
   description = "API Server Security Group"
@@ -36,6 +36,8 @@ resource "aws_security_group" "sg_apiserver" {
   }
 }
 
+## SG Rules
+### Ingress
 resource "aws_security_group_rule" "sg_apiserver_rule_ing_http" {
   type              = "ingress"
   from_port         = 8080
@@ -62,6 +64,7 @@ resource "aws_security_group_rule" "sg_apiserver_rule_ing_ssh" {
   }
 }
 
+### Egress
 resource "aws_security_group_rule" "sg_apiserver_rule_eg_all" {
   type              = "egress"
   from_port         = 0
@@ -75,8 +78,9 @@ resource "aws_security_group_rule" "sg_apiserver_rule_eg_all" {
   }
 }
 
-# ----- EC2 -----
-resource "aws_instance" "apiserver" {
+# EC2
+## AZ1
+resource "aws_instance" "apiserver_az1" {
   ami           = data.aws_ami.amazonLinux.id
   instance_type = "t2.micro"
 
@@ -84,11 +88,28 @@ resource "aws_instance" "apiserver" {
     aws_security_group.sg_apiserver.id
   ]
 
-  subnet_id = aws_subnet.vpc_main_priv_subnet_api.id
+  subnet_id = aws_subnet.priv_subnet_az1_api.id
   key_name  = "elon-kiosk-ssh-pubkey"
 
   tags = {
-    Name = "elon-kiosk-api"
+    Name = "elon-kiosk-api-az1"
+  }
+}
+
+## AZ2
+resource "aws_instance" "apiserver_az2" {
+  ami           = data.aws_ami.amazonLinux.id
+  instance_type = "t2.micro"
+
+  vpc_security_group_ids = [
+    aws_security_group.sg_apiserver.id
+  ]
+
+  subnet_id = aws_subnet.priv_subnet_az2_api.id
+  key_name  = "elon-kiosk-ssh-pubkey"
+
+  tags = {
+    Name = "elon-kiosk-api-az2"
   }
 }
 
@@ -98,17 +119,11 @@ resource "aws_instance" "apiserver" {
 resource "aws_instance" "tunnel" {
   ami           = data.aws_ami.amazonLinux.id
   instance_type = "t2.micro"
-
-  vpc_security_group_ids = [
-    aws_security_group.sg_apiserver.id
-  ]
-
-  subnet_id = aws_subnet.vpc_main_pub_subnet.id
+  subnet_id = aws_subnet.pub_subnet_az1.id
   key_name  = "elon-kiosk-ssh-pubkey"
+  associate_public_ip_address = true
 
   tags = {
     Name = "elon-kiosk-tunnel"
   }
-
-  associate_public_ip_address = true
 }

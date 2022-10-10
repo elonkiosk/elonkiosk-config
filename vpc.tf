@@ -74,7 +74,7 @@ resource "aws_route_table_association" "vpc_main_priv_rtb_api_assoc" {
 resource "aws_route" "priv_rtb_api_default" {
   route_table_id         = aws_route_table.vpc_main_priv_rtb_api.id
   destination_cidr_block = "0.0.0.0/0"
-  network_interface_id   = aws_instance.nat_ec2_api.primary_network_interface_id
+  nat_gateway_id         = aws_nat_gateway.nat_api.id
 }
 
 # ----- Private Subnet (DB Layer) -----

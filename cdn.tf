@@ -1,14 +1,30 @@
-resource "aws_cloudfront_origin_access_identity" "webview_distribution_oai" {
+# Global Certificate
+resource "aws_acm_certificate" "global_cert" {
+  provider                  = aws.virginia
+  domain_name               = var.hz_main_name
+  subject_alternative_names = [format("*.%s", var.hz_main_name)]
+  validation_method         = "DNS"
 }
 
-resource "aws_cloudfront_distribution" "webview_distribution" {
+## ACM Validation
+resource "aws_acm_certificate_validation" "global_cert_validate" {
+  provider                = aws.virginia
+  certificate_arn         = aws_acm_certificate.global_cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.hz_main_record_certverify : record.fqdn]
+}
+
+# CloudFront Distribution
+resource "aws_cloudfront_origin_access_identity" "fe_oai" {
+}
+
+resource "aws_cloudfront_distribution" "fe_distribution" {
   origin {
     domain_name = aws_s3_bucket.webview_bucket.bucket_domain_name
     origin_id   = aws_s3_bucket.webview_bucket.id
     origin_path = "/customer"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.webview_distribution_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.fe_oai.cloudfront_access_identity_path
     }
   }
 
@@ -44,7 +60,7 @@ resource "aws_cloudfront_distribution" "webview_distribution" {
   }
 
   viewer_certificate {
-    # acm_certificate_arn = aws_acm_certificate.hz_main_cert.arn
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.global_cert.arn
+    ssl_support_method  = "sni-only"
   }
 }

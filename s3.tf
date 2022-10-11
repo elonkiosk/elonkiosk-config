@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "webview_bucket_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.webview_distribution_oai.iam_arn]
+      identifiers = [aws_cloudfront_origin_access_identity.fe_oai.iam_arn]
     }
   }
 }

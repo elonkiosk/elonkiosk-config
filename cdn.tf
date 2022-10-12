@@ -144,4 +144,17 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
     default_ttl            = 3600
     max_ttl                = 86400
   }
+
+  # SPA support: 404 handling
+  custom_error_response {
+    error_code = 404
+    response_code = 200
+    response_page_path = "/index.html"
+  }
+
+  custom_error_response {
+    error_code = 403
+    response_code = 200
+    response_page_path = "/index.html"
+  }
 }

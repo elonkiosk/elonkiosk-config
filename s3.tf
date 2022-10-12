@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "wv_customer_bucket" {
 ### Bucket ACL setting
 resource "aws_s3_bucket_acl" "wv_customer_bucket_acl" {
   bucket = aws_s3_bucket.wv_customer_bucket.id
-  acl = "private"
+  acl    = "private"
 }
 
 data "aws_iam_policy_document" "wv_customer_bucket_policy" {
@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "wv_store_bucket" {
 ### Bucket ACL setting
 resource "aws_s3_bucket_acl" "wv_store_bucket_acl" {
   bucket = aws_s3_bucket.wv_store_bucket.id
-  acl = "private"
+  acl    = "private"
 }
 
 data "aws_iam_policy_document" "wv_store_bucket_policy" {

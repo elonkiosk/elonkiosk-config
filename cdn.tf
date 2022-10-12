@@ -30,10 +30,10 @@ resource "aws_cloudfront_function" "fe_func_replace_request_uri" {
 
 ## Distributions
 resource "aws_cloudfront_distribution" "fe_distribution" {
-  aliases = [format("elon-kiosk.%s", var.hz_main_name)]
-  enabled             = true
-  is_ipv6_enabled     = true
-  price_class = "PriceClass_200"
+  aliases         = [format("elon-kiosk.%s", var.hz_main_name)]
+  enabled         = true
+  is_ipv6_enabled = true
+  price_class     = "PriceClass_200"
 
   restrictions {
     geo_restriction {
@@ -55,10 +55,10 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
     origin_id   = aws_alb.alb_main.id
 
     custom_origin_config {
-      http_port = 80
-      https_port = 443
+      http_port              = 80
+      https_port             = 443
       origin_protocol_policy = "match-viewer"
-      origin_ssl_protocols = ["TLSv1.2"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
@@ -70,8 +70,8 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
     target_origin_id = aws_alb.alb_main.id
 
     forwarded_values {
-      query_string = true # Forward all query_string
-      headers = ["*"] # Forward all headers
+      query_string = true  # Forward all query_string
+      headers      = ["*"] # Forward all headers
 
       cookies {
         forward = "all" # Forward all cookies
@@ -160,14 +160,14 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
 
   # SPA support: 404 handling
   custom_error_response {
-    error_code = 404
-    response_code = 200
+    error_code         = 404
+    response_code      = 200
     response_page_path = "/index.html"
   }
 
   custom_error_response {
-    error_code = 403
-    response_code = 200
+    error_code         = 403
+    response_code      = 200
     response_page_path = "/index.html"
   }
 }

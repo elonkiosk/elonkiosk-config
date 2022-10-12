@@ -85,24 +85,24 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
   }
 
   #############################################
-  # Precedence 1) S3:store webview bucket
+  # Precedence 1) S3:customer webview bucket
   #############################################
   # Origin
   origin {
-    domain_name = aws_s3_bucket.wv_store_bucket.bucket_domain_name
-    origin_id   = aws_s3_bucket.wv_store_bucket.id
+    domain_name = aws_s3_bucket.wv_customer_bucket.bucket_domain_name
+    origin_id   = aws_s3_bucket.wv_customer_bucket.id
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.fe_store_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.fe_customer_oai.cloudfront_access_identity_path
     }
   }
 
   # Behavior
   ordered_cache_behavior {
-    path_pattern     = "/store*"
+    path_pattern     = "/store*" # Use "/store" prefix to make URL path like "/store/$STORE_ID"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.wv_store_bucket.id
+    target_origin_id = aws_s3_bucket.wv_customer_bucket.id
 
     forwarded_values {
       query_string = false
@@ -124,17 +124,17 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
   }
 
   #############################################
-  # Default precedence) S3:customer webview bucket
+  # Default precedence) S3:store webview bucket
   #############################################
   default_root_object = "index.html"
 
   # Origin
   origin {
-    domain_name = aws_s3_bucket.wv_customer_bucket.bucket_domain_name
-    origin_id   = aws_s3_bucket.wv_customer_bucket.id
+    domain_name = aws_s3_bucket.wv_store_bucket.bucket_domain_name
+    origin_id   = aws_s3_bucket.wv_store_bucket.id
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.fe_customer_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.fe_store_oai.cloudfront_access_identity_path
     }
   }
 
@@ -142,7 +142,7 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.wv_customer_bucket.id
+    target_origin_id = aws_s3_bucket.wv_store_bucket.id
 
     forwarded_values {
       query_string = false

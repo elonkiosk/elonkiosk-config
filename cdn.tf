@@ -22,6 +22,7 @@ resource "aws_cloudfront_origin_access_identity" "fe_store_oai" {
 }
 
 resource "aws_cloudfront_distribution" "fe_distribution" {
+  aliases = [format("elon-kiosk.%s", var.hz_main_name)]
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"

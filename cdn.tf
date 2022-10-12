@@ -21,6 +21,14 @@ resource "aws_cloudfront_origin_access_identity" "fe_customer_oai" {
 resource "aws_cloudfront_origin_access_identity" "fe_store_oai" {
 }
 
+## Functions
+resource "aws_cloudfront_function" "fe_func_replace_request_uri" {
+  name    = "elon-kiosk-cloudfront-function-replace-request-uri"
+  runtime = "cloudfront-js-1.0"
+  code    = file("./cloudfront-functions/replace-request-uri.js")
+}
+
+## Distributions
 resource "aws_cloudfront_distribution" "fe_distribution" {
   aliases = [format("elon-kiosk.%s", var.hz_main_name)]
   enabled             = true
@@ -102,6 +110,11 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
       cookies {
         forward = "none"
       }
+    }
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.fe_func_replace_request_uri.arn
     }
 
     viewer_protocol_policy = "redirect-to-https"

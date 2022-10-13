@@ -88,12 +88,19 @@ resource "aws_instance" "apiserver_az1" {
     aws_security_group.sg_apiserver.id
   ]
 
-  subnet_id = aws_subnet.priv_subnet_az1_api.id
-  key_name  = "elon-kiosk-ssh-pubkey"
+  subnet_id            = aws_subnet.priv_subnet_az1_api.id
+  key_name             = "elon-kiosk-ssh-pubkey"
+  iam_instance_profile = aws_iam_instance_profile.apiserver_az1_iam_profile.name
 
   tags = {
     Name = "elon-kiosk-api-az1"
+    Tier = "api-server-layer"
   }
+}
+
+resource "aws_iam_instance_profile" "apiserver_az1_iam_profile" {
+  name = "elon-kiosk-api-az1-iam-profile"
+  role = aws_iam_role.ec2_role.name
 }
 
 ## AZ2
@@ -105,10 +112,17 @@ resource "aws_instance" "apiserver_az2" {
     aws_security_group.sg_apiserver.id
   ]
 
-  subnet_id = aws_subnet.priv_subnet_az2_api.id
-  key_name  = "elon-kiosk-ssh-pubkey"
+  subnet_id            = aws_subnet.priv_subnet_az2_api.id
+  key_name             = "elon-kiosk-ssh-pubkey"
+  iam_instance_profile = aws_iam_instance_profile.apiserver_az2_iam_profile.name
 
   tags = {
     Name = "elon-kiosk-api-az2"
+    Tier = "api-server-layer"
   }
+}
+
+resource "aws_iam_instance_profile" "apiserver_az2_iam_profile" {
+  name = "elon-kiosk-api-az2-iam-profile"
+  role = aws_iam_role.ec2_role.name
 }

@@ -59,3 +59,7 @@ resource "aws_s3_bucket_policy" "wv_store_bucket_policy" {
 resource "aws_s3_bucket" "menu_img_bucket" {
   bucket = "elon-kiosk-menu-img-bucket"
 }
+
+resource "aws_s3_bucket" "be_bucket" {
+  bucket = "elon-kiosk-backend-bucket"
+}

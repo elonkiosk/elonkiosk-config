@@ -59,7 +59,7 @@ resource "aws_db_instance" "db_main" {
   db_subnet_group_name = aws_db_subnet_group.subnet_group_db.name
   engine = "mysql"
   engine_version = "8.0.30"
-  instance_class = "db.t3.small"
+  instance_class = "db.t3.micro"
   skip_final_snapshot = true
   identifier = "elon-kiosk-db"
   username = var.DB_USERNAME

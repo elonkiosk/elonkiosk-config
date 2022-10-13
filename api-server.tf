@@ -112,22 +112,3 @@ resource "aws_instance" "apiserver_az2" {
     Name = "elon-kiosk-api-az2"
   }
 }
-
-# WARNING
-# This instance is intended to use as a SSH tunnel to the API server instance
-# Should be deleted in production environment
-resource "aws_instance" "tunnel" {
-  ami                         = data.aws_ami.amazonLinux.id
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.pub_subnet_az1.id
-  key_name                    = "elon-kiosk-ssh-pubkey"
-  associate_public_ip_address = true
-
-  vpc_security_group_ids = [
-    aws_security_group.sg_apiserver.id
-  ]
-
-  tags = {
-    Name = "elon-kiosk-tunnel"
-  }
-}

@@ -132,6 +132,7 @@ resource "aws_cloudfront_distribution" "fe_distribution" {
   origin {
     domain_name = aws_s3_bucket.wv_store_bucket.bucket_domain_name
     origin_id   = aws_s3_bucket.wv_store_bucket.id
+    origin_path = "/build"
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.fe_store_oai.cloudfront_access_identity_path

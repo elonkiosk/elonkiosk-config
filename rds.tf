@@ -13,11 +13,11 @@ resource "aws_security_group" "sg_db" {
 ### Ingress
 resource "aws_security_group_rule" "sg_db_rule_ing_conn" {
   type                     = "ingress"
-  from_port = var.DB_PORT
-  to_port = var.DB_PORT
+  from_port                = var.DB_PORT
+  to_port                  = var.DB_PORT
   protocol                 = "TCP"
-  source_security_group_id        = aws_security_group.sg_apiserver.id
-  security_group_id = aws_security_group.sg_db.id
+  source_security_group_id = aws_security_group.sg_apiserver.id
+  security_group_id        = aws_security_group.sg_db.id
 
   lifecycle {
     create_before_destroy = true
@@ -53,18 +53,18 @@ resource "aws_db_subnet_group" "subnet_group_db" {
 
 # RDS instance
 resource "aws_db_instance" "db_main" {
-  allocated_storage = 20
-  max_allocated_storage = 50
-  availability_zone = "ap-northeast-2a"
-  db_subnet_group_name = aws_db_subnet_group.subnet_group_db.name
-  engine = "mysql"
-  engine_version = "8.0.30"
-  instance_class = "db.t3.micro"
-  skip_final_snapshot = true
-  identifier = "elon-kiosk-db"
-  username = var.DB_USERNAME
-  password = var.DB_PASSWORD
-  db_name = var.DB_NAME
-  port = var.DB_PORT
+  allocated_storage      = 20
+  max_allocated_storage  = 50
+  availability_zone      = "ap-northeast-2a"
+  db_subnet_group_name   = aws_db_subnet_group.subnet_group_db.name
+  engine                 = "mysql"
+  engine_version         = "8.0.30"
+  instance_class         = "db.t3.micro"
+  skip_final_snapshot    = true
+  identifier             = "elon-kiosk-db"
+  username               = var.DB_USERNAME
+  password               = var.DB_PASSWORD
+  db_name                = var.DB_NAME
+  port                   = var.DB_PORT
   vpc_security_group_ids = [aws_security_group.sg_db.id]
 }

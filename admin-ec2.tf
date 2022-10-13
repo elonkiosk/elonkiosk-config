@@ -12,12 +12,12 @@ resource "aws_security_group" "sg_admin" {
 ## SG Rules
 ### Ingress
 resource "aws_security_group_rule" "sg_admin_rule_ing_test_port" {
-  type                     = "ingress"
-  from_port                = 8080
-  to_port                  = 8080
-  protocol                 = "TCP"
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "TCP"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id        = aws_security_group.sg_admin.id
+  security_group_id = aws_security_group.sg_admin.id
 
   lifecycle {
     create_before_destroy = true

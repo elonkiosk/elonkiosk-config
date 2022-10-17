@@ -60,6 +60,31 @@ resource "aws_s3_bucket" "menu_img_bucket" {
   bucket = "elon-kiosk-menu-img-bucket"
 }
 
+resource "aws_s3_bucket_policy" "menu_img_bucket_policy" {
+  bucket = aws_s3_bucket.menu_img_bucket.id
+  policy = data.aws_iam_policy_document.menu_img_bucket_policy.json
+}
+
+data "aws_iam_policy_document" "menu_img_bucket_policy" {
+  statement {
+    sid = "AddPerm"
+
+    actions = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "${aws_s3_bucket.menu_img_bucket.arn}/*"
+    ]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+}
+
+# Backend bucket
 resource "aws_s3_bucket" "be_bucket" {
   bucket = "elon-kiosk-backend-bucket"
 }

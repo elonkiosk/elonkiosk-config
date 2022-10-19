@@ -6,10 +6,10 @@ resource "aws_route53_zone" "hz_main" {
 resource "aws_route53_record" "hz_main_record_ns" {
   name = var.hz_main_name
   records = [
-    "ns-1266.awsdns-30.org.",
-    "ns-130.awsdns-16.com.",
-    "ns-2005.awsdns-58.co.uk.",
-    "ns-654.awsdns-17.net.",
+    "ns-1518.awsdns-61.org.",
+    "ns-1837.awsdns-37.co.uk.",
+    "ns-257.awsdns-32.com.",
+    "ns-615.awsdns-12.net.",
   ]
   ttl     = 172800
   type    = "NS"
@@ -19,7 +19,7 @@ resource "aws_route53_record" "hz_main_record_ns" {
 resource "aws_route53_record" "hz_main_record_soa" {
   name = var.hz_main_name
   records = [
-    "ns-2005.awsdns-58.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400",
+    "ns-1837.awsdns-37.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400",
   ]
   ttl     = 900
   type    = "SOA"
@@ -60,7 +60,7 @@ resource "aws_acm_certificate_validation" "hz_main_cert_validate" {
 ## ALB Alias Record
 resource "aws_route53_record" "hz_main_record_cdn" {
   zone_id = aws_route53_zone.hz_main.zone_id
-  name    = format("elon-kiosk.%s", var.hz_main_name)
+  name    = var.hz_main_name
   type    = "A"
 
   alias {

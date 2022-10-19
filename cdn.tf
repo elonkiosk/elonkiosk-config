@@ -30,7 +30,7 @@ resource "aws_cloudfront_function" "fe_func_replace_request_uri" {
 
 ## Distributions
 resource "aws_cloudfront_distribution" "fe_distribution" {
-  aliases         = [format("elon-kiosk.%s", var.hz_main_name)]
+  aliases         = [var.hz_main_name]
   enabled         = true
   is_ipv6_enabled = true
   price_class     = "PriceClass_200"
